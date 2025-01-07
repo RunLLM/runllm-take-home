@@ -1,0 +1,71 @@
+[tool.poetry]
+name = "server"
+version = "0.1.0"
+description = ""
+authors = ["runllm"]
+readme = "../README.md"
+packages = [
+    { include = "server" },
+    { include = "server/py.typed" },
+]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+fastapi = "^0.115.0"
+uvicorn = "^0.30.6"
+pydantic = "^2.9.2"
+ollama = "^0.4.6"
+elasticsearch = "==8.12.1"
+loguru = "^0.7.3"
+
+# For tests
+pytest = "^8.3.4"
+requests = "^2.31.0"
+
+# For static checks
+ruff = "==0.6.4"
+mypy = "^1.7.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+exclude = [
+    "\\.eggs",
+    "\\.git",
+    "\\.hg",
+    "\\.mypy_cache",
+    "\\.tox",
+    "\\.venv",
+    "\\.svn",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+]
+
+[tool.ruff.lint]
+# F: Black-like formatting
+# I: Import sorting (isort functionality)
+# RUF100: Removes all unused imports.
+# RUF101: Removes all unused variables.
+select = ["F", "I", "RUF100", "RUF101"]
+fixable = ["ALL"]
+
+[tool.ruff.format]
+quote-style = "double"  # Use double quotes by default
+indent-style = "space"  # Use spaces for indentation
+line-ending = "lf"      # Use LF for line endings
+skip-magic-trailing-comma = false  # Do not skip magic trailing commas
+docstring-code-format = true # Format code in docstrings
+
+
+[tool.mypy]
+python_version = "3.10"
+ignore_missing_imports = true
+allow_subclassing_any = true
+strict = true
