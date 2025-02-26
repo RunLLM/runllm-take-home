@@ -1,10 +1,10 @@
 server:
 	@echo "Starting server app..."
-	@cd server/server && uvicorn server_app:app --reload --port 5001 --host 0.0.0.0
+	uvicorn server.server_app:app --reload --port 5001 --host 0.0.0.0
 
 run-tests:
 	@echo "Running tests..."
-	@cd tests && pytest -rP .
+	pytest -rP tests/
 
 run-static-checks:
 	@echo "Running linters and mypy checks and autofixers..."

@@ -19,18 +19,6 @@ until is_docker_running; do
     fi
 done
 
-echo "Starting ollama service"
-if [ "$(docker ps -q -f name=ollama)" ]; then
-    echo "Ollama container is already running."
-elif [ "$(docker ps -aq -f name=ollama)" ]; then
-    echo "Ollama container exists, restarting existing container..."
-    docker restart ollama
-else
-    echo "Starting new ollama container..."
-    docker pull ollama/ollama:latest
-    docker run -d -v ollama:/root/.ollama -p 11434:11434 --name ollama ollama/ollama
-fi
-
 echo "Starting Elasticsearch service"
 if [ "$(docker ps -q -f name=elasticsearch)" ]; then
     echo "Elasticsearch container is already running."
@@ -44,7 +32,8 @@ else
 fi
 
 echo "Installing poetry"
-pip3 install poetry
+pip3 install poetry==1.8.2
+
 poetry config virtualenvs.in-project true 
 
 echo "Installing dependencies"
@@ -53,9 +42,6 @@ if ! grep -q 'export PATH="$PWD/server/.venv/bin:$PATH"' ~/.bashrc; then
     echo 'export PATH="$PWD/server/.venv/bin:$PATH"' >> ~/.bashrc
     source ~/.bashrc
 fi
-
-echo "Pulling LLMs"
-python setup/pull_models.py
 
 echo "Uploading embeddings"
 python data/upload_embeddings.py
